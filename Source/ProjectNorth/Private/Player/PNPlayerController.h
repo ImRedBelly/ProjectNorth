@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PNPlayerController.generated.h"
 
+class APNPlayerCharacter;
 /**
  * 
  */
@@ -13,5 +14,12 @@ UCLASS()
 class APNPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void AcknowledgePossession(APawn* NewPawn) override;
 	
+private:
+	UPROPERTY()
+	APNPlayerCharacter* PlayerCharacter;
 };

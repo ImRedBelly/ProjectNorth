@@ -11,6 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
+class UPNAbilitySystemComponent;
 
 UCLASS()
 class APNPlayerCharacter : public APNCharacter
@@ -19,6 +20,8 @@ class APNPlayerCharacter : public APNCharacter
 
 public:
 	APNPlayerCharacter();
+	void ServerSideInit();
+	void ClientSideInit();
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Camera")

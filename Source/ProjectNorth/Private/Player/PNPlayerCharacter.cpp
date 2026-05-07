@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GAS/PNAbilitySystemComponent.h"
 
 constexpr float NegateValue = -1;
 
@@ -23,6 +24,17 @@ APNPlayerCharacter::APNPlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 720.f, 0.f);
 
 	bUseControllerRotationYaw = false;
+}
+
+void APNPlayerCharacter::ServerSideInit()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	AbilitySystemComponent->ApplyInitialEffects();
+}
+
+void APNPlayerCharacter::ClientSideInit()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
 void APNPlayerCharacter::PawnClientRestart()

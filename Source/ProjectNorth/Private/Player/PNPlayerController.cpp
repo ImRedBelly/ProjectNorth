@@ -4,6 +4,8 @@
 #include "Player/PNPlayerController.h"
 
 #include "PNPlayerCharacter.h"
+#include "Blueprint/UserWidget.h"
+#include "Widgets/GameplayWidget.h"
 
 void APNPlayerController::OnPossess(APawn* InPawn)
 {
@@ -22,5 +24,17 @@ void APNPlayerController::AcknowledgePossession(APawn* NewPawn)
 	if (PlayerCharacter)
 	{
 		PlayerCharacter->ClientSideInit();
+		SpawnGameplayWidget();
+	}
+}
+
+void APNPlayerController::SpawnGameplayWidget()
+{
+	if (!IsLocalPlayerController()) return;
+
+	GameplayWidget = CreateWidget<UGameplayWidget>(GetWorld(), GameplayWidgetClass);
+	if (GameplayWidget)
+	{
+		GameplayWidget->AddToViewport();
 	}
 }

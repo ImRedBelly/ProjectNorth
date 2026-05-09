@@ -26,17 +26,6 @@ APNPlayerCharacter::APNPlayerCharacter()
 	bUseControllerRotationYaw = false;
 }
 
-void APNPlayerCharacter::ServerSideInit()
-{
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	AbilitySystemComponent->ApplyInitialEffects();
-}
-
-void APNPlayerCharacter::ClientSideInit()
-{
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-}
-
 void APNPlayerCharacter::PawnClientRestart()
 {
 	Super::PawnClientRestart();

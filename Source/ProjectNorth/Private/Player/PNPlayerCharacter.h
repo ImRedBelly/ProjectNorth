@@ -20,8 +20,6 @@ class APNPlayerCharacter : public APNCharacter
 
 public:
 	APNPlayerCharacter();
-	void ServerSideInit();
-	void ClientSideInit();
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Camera")
@@ -41,7 +39,7 @@ protected:
 	UInputAction* JumpAction;
 
 	virtual void PawnClientRestart() override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 private:
 	void HandleMoveInput(const FInputActionValue& InputActionValue);

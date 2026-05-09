@@ -18,8 +18,16 @@ class APNPlayerController : public APlayerController
 public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void AcknowledgePossession(APawn* NewPawn) override;
-	
+
 private:
 	UPROPERTY()
 	APNPlayerCharacter* PlayerCharacter;
+
+	UPROPERTY(EditDefaultsOnly, Category="UI")
+	TSubclassOf<UUserWidget> GameplayWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* GameplayWidget;
+	
+	void SpawnGameplayWidget();
 };

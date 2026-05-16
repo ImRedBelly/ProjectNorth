@@ -24,6 +24,7 @@ void APNCharacter::ServerSideInit()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	AbilitySystemComponent->ApplyInitialEffects();
+	AbilitySystemComponent->GiveInitialAbilities();
 }
 
 void APNCharacter::ClientSideInit()

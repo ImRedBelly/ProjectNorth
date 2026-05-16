@@ -12,7 +12,7 @@ void UValueGauge::SetValue(float CurrentValue, float MaxValue)
 {
 	CachedCurrentValue = CurrentValue;
 	CachedMaxValue = MaxValue;
-	if (CurrentValue == 0) return;
+	if (CurrentValue < 0) return;
 	ProgressBar->SetPercent(CurrentValue / MaxValue);
 
 	FNumberFormattingOptions Options = FNumberFormattingOptions().SetMaximumFractionalDigits(0);

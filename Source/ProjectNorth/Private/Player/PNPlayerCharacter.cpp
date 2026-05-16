@@ -48,11 +48,14 @@ void APNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(MoveActionAction, ETriggerEvent::Triggered, this,
-		                                   &APNPlayerCharacter::HandleMoveInput);
-		EnhancedInputComponent->BindAction(LookActionAction, ETriggerEvent::Triggered, this,
-		                                   &APNPlayerCharacter::HandleLookInput);
+		EnhancedInputComponent->BindAction(MoveActionAction, ETriggerEvent::Triggered, this,&APNPlayerCharacter::HandleMoveInput);
+		EnhancedInputComponent->BindAction(LookActionAction, ETriggerEvent::Triggered, this,&APNPlayerCharacter::HandleLookInput);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APNCharacter::Jump);
+
+		for (auto KV : GameplayAbilityInputActions)
+		{
+			EnhancedInputComponent->BindAction(KV.Value, ETriggerEvent::Triggered, this, &APNPlayerCharacter::HandleAbilityInput, KV.Key);
+		}
 	}
 }
 
@@ -69,6 +72,18 @@ void APNPlayerCharacter::HandleLookInput(const FInputActionValue& InputActionVal
 	FVector2D InputValue = InputActionValue.Get<FVector2D>();
 	AddControllerPitchInput(InputValue.Y * NegateValue);
 	AddControllerYawInput(InputValue.X);
+}
+
+void APNPlayerCharacter::HandleAbilityInput(const FInputActionValue& InputActionValue, EAbilityInputID InputID)
+{
+	if (InputActionValue.Get<bool>())
+	{
+		GetAbilitySystemComponent()->AbilityLocalInputPressed(static_cast<int32>(InputID));
+	}
+	else
+	{
+		GetAbilitySystemComponent()->AbilityLocalInputReleased(static_cast<int32>(InputID));
+	}
 }
 
 FVector APNPlayerCharacter::GetLookRightDir() const

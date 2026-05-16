@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/PNCharacter.h"
+#include "GAS/PNGameplayAbilityTypes.h"
 #include "PNPlayerCharacter.generated.h"
 
 struct FInputActionValue;
@@ -37,6 +38,9 @@ protected:
 	UInputAction* LookActionAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* JumpAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TMap<EAbilityInputID, UInputAction*> GameplayAbilityInputActions;
+	
 
 	virtual void PawnClientRestart() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
@@ -44,6 +48,7 @@ protected:
 private:
 	void HandleMoveInput(const FInputActionValue& InputActionValue);
 	void HandleLookInput(const FInputActionValue& InputActionValue);
+	void HandleAbilityInput(const FInputActionValue& InputActionValue, EAbilityInputID InputID);
 
 	FVector GetLookRightDir() const;
 	FVector GetLookFwdDir() const;

@@ -21,11 +21,13 @@ class UPNAttributeSet : public UAttributeSet
 public:
 	ATTRIBUTE_ACCESSORS(UPNAttributeSet, Health);
 	ATTRIBUTE_ACCESSORS(UPNAttributeSet, MaxHealth);
-	
+
 	ATTRIBUTE_ACCESSORS(UPNAttributeSet, Mana);
 	ATTRIBUTE_ACCESSORS(UPNAttributeSet, MaxMana);
-	
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 private:
 	UPROPERTY(ReplicatedUsing = OnRep_Health)
@@ -36,7 +38,7 @@ private:
 	FGameplayAttributeData Mana;
 	UPROPERTY(ReplicatedUsing=OnRep_MaxMana)
 	FGameplayAttributeData MaxMana;
-	
+
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	UFUNCTION()

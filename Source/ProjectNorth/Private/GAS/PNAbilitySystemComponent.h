@@ -4,11 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "PNGameplayAbilityTypes.h"
 #include "PNAbilitySystemComponent.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class UPNAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -16,8 +14,15 @@ class UPNAbilitySystemComponent : public UAbilitySystemComponent
 
 public:
 	void ApplyInitialEffects();
+	void GiveInitialAbilities();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay Effects")
 	TArray<TSubclassOf<UGameplayEffect>> InitialEffects;
+
+	UPROPERTY(EditDefaultsOnly, Category="Initial Abilities")
+	TMap<EAbilityInputID, TSubclassOf<UGameplayAbility>> InitialAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category="Initial Abilities")
+	TMap<EAbilityInputID, TSubclassOf<UGameplayAbility>> Abilities;
 };

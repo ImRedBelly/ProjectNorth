@@ -3,6 +3,15 @@
 
 #include "GAS/PNAbilitySystemComponent.h"
 
+#include "AudioMixerBlueprintLibrary.h"
+#include "PNAttributeSet.h"
+
+UPNAbilitySystemComponent::UPNAbilitySystemComponent()
+{
+	GetGameplayAttributeValueChangeDelegate(UPNAttributeSet::GetHealthAttribute())
+		.AddUObject(this, &ThisClass::HealthUpdated);
+}
+
 void UPNAbilitySystemComponent::ApplyInitialEffects()
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
@@ -26,5 +35,29 @@ void UPNAbilitySystemComponent::GiveInitialAbilities()
 	for (auto& KV : Abilities)
 	{
 		GiveAbility(FGameplayAbilitySpec(KV.Value, 0, static_cast<int32>(KV.Key), nullptr));
+	}
+}
+
+void UPNAbilitySystemComponent::ApplyFullStatEffect()
+{
+	AuthApplyGameplayEffect(FullStatEffect, 1);
+}
+
+void UPNAbilitySystemComponent::HealthUpdated(const FOnAttributeChangeData& ChangeData)
+{
+	if (ChangeData.NewValue <= 0)
+	{
+		AuthApplyGameplayEffect(DeathEffect, 1);
+	}
+}
+
+void UPNAbilitySystemComponent::AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+
+	if (GameplayEffect)
+	{
+		FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingSpec(GameplayEffect, Level, MakeEffectContext());
+		ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 	}
 }

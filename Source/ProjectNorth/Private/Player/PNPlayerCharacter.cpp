@@ -48,14 +48,35 @@ void APNPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(MoveActionAction, ETriggerEvent::Triggered, this,&APNPlayerCharacter::HandleMoveInput);
-		EnhancedInputComponent->BindAction(LookActionAction, ETriggerEvent::Triggered, this,&APNPlayerCharacter::HandleLookInput);
+		EnhancedInputComponent->BindAction(MoveActionAction, ETriggerEvent::Triggered, this,
+		                                   &APNPlayerCharacter::HandleMoveInput);
+		EnhancedInputComponent->BindAction(LookActionAction, ETriggerEvent::Triggered, this,
+		                                   &APNPlayerCharacter::HandleLookInput);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APNCharacter::Jump);
 
 		for (auto KV : GameplayAbilityInputActions)
 		{
-			EnhancedInputComponent->BindAction(KV.Value, ETriggerEvent::Triggered, this, &APNPlayerCharacter::HandleAbilityInput, KV.Key);
+			EnhancedInputComponent->BindAction(KV.Value, ETriggerEvent::Triggered, this,
+			                                   &APNPlayerCharacter::HandleAbilityInput, KV.Key);
 		}
+	}
+}
+
+void APNPlayerCharacter::OnDeath()
+{
+	Super::OnDeath();
+	if (APlayerController* OwningPlayerController = GetController<APlayerController>())
+	{
+		DisableInput(OwningPlayerController);
+	}
+}
+
+void APNPlayerCharacter::OnRespawn()
+{
+	Super::OnRespawn();
+	if (APlayerController* OwningPlayerController = GetController<APlayerController>())
+	{
+		EnableInput(OwningPlayerController);
 	}
 }
 

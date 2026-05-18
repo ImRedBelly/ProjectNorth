@@ -15,11 +15,16 @@ UAnimInstance* UPNGameplayAbility::GetOwnerAnimInstance() const
 }
 
 TArray<FHitResult> UPNGameplayAbility::GetHitResultsFromSweepLocationTargetData(
-	const FGameplayAbilityTargetDataHandle& TargetDataHandle, float SphereSweepRadius, bool bIgnoreSelf,
+	const FGameplayAbilityTargetDataHandle& TargetDataHandle,
+	float SphereSweepRadius,
+	ETeamAttitude::Type TargetTeam,
+	bool bIgnoreSelf,
 	bool bDrawDebug) const
 {
 	TArray<FHitResult> OutResult;
 	TArray<AActor*> HitActors;
+
+	IGenericTeamAgentInterface* OwnerTeamInterface = Cast<IGenericTeamAgentInterface>(GetAvatarActorFromActorInfo());
 
 	for (auto TargetData : TargetDataHandle.Data)
 	{
@@ -49,6 +54,16 @@ TArray<FHitResult> UPNGameplayAbility::GetHitResultsFromSweepLocationTargetData(
 		for (const FHitResult& Result : Results)
 		{
 			if (HitActors.Contains(Result.GetActor())) continue;
+
+			if (OwnerTeamInterface)
+			{
+				ETeamAttitude::Type OtherTeamAttitude = OwnerTeamInterface->GetTeamAttitudeTowards(*Result.GetActor());
+				if (OtherTeamAttitude != TargetTeam)
+				{
+					continue;
+				}
+			}
+
 			HitActors.Add(Result.GetActor());
 			OutResult.Add(Result);
 		}

@@ -5,6 +5,7 @@
 
 #include "PNPlayerCharacter.h"
 #include "Blueprint/UserWidget.h"
+#include "Net/UnrealNetwork.h"
 #include "Widgets/GameplayWidget.h"
 
 void APNPlayerController::OnPossess(APawn* InPawn)
@@ -14,6 +15,7 @@ void APNPlayerController::OnPossess(APawn* InPawn)
 	if (PlayerCharacter)
 	{
 		PlayerCharacter->ServerSideInit();
+		PlayerCharacter->SetGenericTeamId(TeamID);
 	}
 }
 
@@ -26,6 +28,22 @@ void APNPlayerController::AcknowledgePossession(APawn* NewPawn)
 		PlayerCharacter->ClientSideInit();
 		SpawnGameplayWidget();
 	}
+}
+
+void APNPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(APNPlayerController, TeamID);
+}
+
+FGenericTeamId APNPlayerController::GetGenericTeamId() const
+{
+	return TeamID;
+}
+
+void APNPlayerController::SetGenericTeamId(const FGenericTeamId& NewTeamID)
+{
+	TeamID = NewTeamID;
 }
 
 void APNPlayerController::SpawnGameplayWidget()

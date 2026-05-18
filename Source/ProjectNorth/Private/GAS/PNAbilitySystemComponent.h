@@ -13,8 +13,11 @@ class UPNAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
+	UPNAbilitySystemComponent();
+
 	void ApplyInitialEffects();
 	void GiveInitialAbilities();
+	void ApplyFullStatEffect();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay Effects")
@@ -25,4 +28,14 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category="Initial Abilities")
 	TMap<EAbilityInputID, TSubclassOf<UGameplayAbility>> Abilities;
+
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay Effects")
+	TSubclassOf<UGameplayEffect> DeathEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category="Gameplay Effects")
+	TSubclassOf<UGameplayEffect> FullStatEffect;
+
+	void HealthUpdated(const FOnAttributeChangeData& ChangeData);
+
+	void AuthApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect, int Level);
 };

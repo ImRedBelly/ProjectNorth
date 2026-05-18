@@ -44,6 +44,8 @@ protected:
 
 	virtual void PawnClientRestart() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	virtual void OnDeath() override;
+	virtual void OnRespawn() override;
 
 private:
 	void HandleMoveInput(const FInputActionValue& InputActionValue);

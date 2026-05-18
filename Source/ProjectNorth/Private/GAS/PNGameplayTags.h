@@ -13,4 +13,6 @@ namespace PNGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Combo_Change_Combo4);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Combo_Change_End);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Combo_Damage);
+	
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stats_Death);
 }

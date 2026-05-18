@@ -18,7 +18,8 @@ public class ProjectNorth : ModuleRules
 			"GameplayTags",
 			"UMG",
 			"Slate",
-			"SlateCore"
+			"SlateCore",
+			"AIModule"
 		});
 
 		// Uncomment if you are using Slate UI
